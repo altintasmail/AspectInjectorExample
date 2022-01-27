@@ -56,15 +56,7 @@ namespace AspectTest
     [Aspect(Scope.Global)]
     public class GlobalAspect : AspectBase
     {
-        private List<Log> LogAttributes { get; set; }
-        private List<Cache> CacheAttributes { get; set; }
-        private List<Validation> ValidationAttributes { get; set; }
-        //public GlobalAspect()
-        //{
-        //    LogAttributes = new List<Log>();
-        //    CacheAttributes = new List<Cache>();
-        //    ValidationAttributes = new List<Validation>();
-        //}
+        private List<AttributeBase> Attributes { get; set; }
 
         [Advice(Kind.Around)]
         public override object Execute([Argument(Source.Target)] Func<object[], object> methodDelegate, [Argument(Source.Arguments)] object[] args, [Argument(Source.Name)] string name)
@@ -76,23 +68,15 @@ namespace AspectTest
         [Advice(Kind.Before)]
         public override void OnBefore([Argument(Source.Name)] string name, [Argument(Source.Metadata)] MethodBase methodBase, [Argument(Source.Type)] Type type)
         {
-            LogAttributes = ReflectionUtils.GetAttributes<Log>(name, methodBase, type);
-            CacheAttributes = ReflectionUtils.GetAttributes<Cache>(name, methodBase, type);
-            ValidationAttributes = ReflectionUtils.GetAttributes<Validation>(name, methodBase, type);
+            Attributes = ReflectionUtils.GetAttributes<AttributeBase>(name, methodBase, type);
 
-            //Console.WriteLine($"metod:{name} öncesi");
-            LogAttributes.ForEach(p=>p.RunBefore(name));
-            CacheAttributes.ForEach(p=>p.RunBefore(name));
-            ValidationAttributes.ForEach(p=>p.RunBefore(name));
+            Attributes.ForEach(p=>p.RunBefore(name));
         }
 
         [Advice(Kind.After)]
         public override void OnAfter([Argument(Source.Name)] string name)
         {
-            //Console.WriteLine($"metod:{name} sonrası");
-            LogAttributes.ForEach(p => p.RunAfter(name));
-            CacheAttributes.ForEach(p => p.RunAfter(name));
-            ValidationAttributes.ForEach(p => p.RunAfter(name));
+            Attributes.ForEach(p => p.RunAfter(name));
         }
     }
 

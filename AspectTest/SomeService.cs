@@ -5,17 +5,17 @@ using System.Text;
 
 namespace AspectTest
 {
-    [Injection(typeof(ValidationAspect),Propagation = PropagateTo.Methods)]
+    [Injection(typeof(GlobalAspect),Propagation = PropagateTo.Methods)]
     public interface ISomeService
     {
         [Validation]
+        [Log]
+        [Cache]
         void Hello();
     }
     
     public class SomeService : ISomeService
-    {
-        [Log]
-        [Cache]        
+    {     
         public void Hello()
         {
             Console.WriteLine("Orjinal Metod içi: Merhaba Dünya");

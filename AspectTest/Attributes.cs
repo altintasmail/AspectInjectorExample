@@ -19,7 +19,7 @@ namespace AspectTest
     }
 
     //[Injection(typeof(CacheAspect))]
-    public class Cache : AttributeBase
+    public class Cache : AttributeBase, ICache
     {
         public override void RunBefore(string methodName)
         {
@@ -30,12 +30,37 @@ namespace AspectTest
         {
             Console.WriteLine($"metod:{methodName} Cache After");
         }
+
+        public override object Execute(Func<object[], object> methodDelegate, object[] args, string name, object val)
+        {
+            var cached = true;//iscached ile kontrol edilebilir.
+
+            if (cached)
+                return GetCachedVal(name);
+
+            var result = methodDelegate(args);
+            SetCache(name, result);
+
+            return result;
+        }
+
+        public object GetCachedVal(string key)
+        {
+            //cache okuma işlemleri
+            return "Cache edilmiş veri.";
+        }
+
+        public void SetCache(string key, object val)
+        {
+            //cache kaydetme işlemleri
+        }
     }
 
     //[Injection(typeof(ValidationAspect))]
     public class Validation : AttributeBase
     {
-        public override void RunBefore(string methodName) {
+        public override void RunBefore(string methodName)
+        {
             Console.WriteLine($"metod:{methodName} Validation Before");
         }
         public override void RunAfter(string methodName)
@@ -48,5 +73,15 @@ namespace AspectTest
     {
         public virtual void RunBefore(string methodName) { }
         public virtual void RunAfter(string methodName) { }
+        public virtual object Execute(Func<object[], object> methodDelegate, object[] args, string name, object val)
+        {
+            if (val != null)
+                return val;
+
+            return methodDelegate(args);
+        }
     }
+
+    public interface ICache
+    { }
 }

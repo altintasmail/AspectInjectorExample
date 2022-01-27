@@ -11,14 +11,14 @@ namespace AspectTest
         [Validation]
         [Log]
         [Cache]
-        void Hello();
+        string Hello();
     }
     
     public class SomeService : ISomeService
     {     
-        public void Hello()
+        public string Hello()
         {
-            Console.WriteLine("Orjinal Metod içi: Merhaba Dünya");
+            return "Orjinal Metod içi: Merhaba Dünya";
         }
     }
 }

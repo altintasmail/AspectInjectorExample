@@ -12,7 +12,8 @@ namespace AspectTest
             .BuildServiceProvider();
 
             var service = serviceProvider.GetRequiredService<ISomeService>();
-            service.Hello();
+            Console.WriteLine(service.Hello());
+            Console.ReadLine();
         }
     }
 }

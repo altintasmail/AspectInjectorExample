@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Extensions.DependencyInjection;
+using System;
 
 namespace AspectTest
 {
@@ -6,7 +7,11 @@ namespace AspectTest
     {
         static void Main(string[] args)
         {
-            var service = new SomeService();
+            var serviceProvider = new ServiceCollection()
+            .AddTransient<ISomeService, SomeService>()
+            .BuildServiceProvider();
+
+            var service = serviceProvider.GetRequiredService<ISomeService>();
             service.Hello();
         }
     }

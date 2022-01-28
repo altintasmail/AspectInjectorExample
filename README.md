@@ -1,3 +1,3 @@
-Aspect injector interface methods example
+Aspect injector example with interface methods 
 
-Used Package:https://github.com/pamidur/aspect-injector
+Using Package:https://github.com/pamidur/aspect-injector
